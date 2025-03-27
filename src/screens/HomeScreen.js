@@ -87,8 +87,8 @@ const styles = StyleSheet.create({
   },
   header: {
     alignItems: 'center',
-    paddingTop: hp('5%'),
-    paddingBottom: hp('3%'),
+    paddingTop: hp('0%'),
+    paddingBottom: hp('2%'),
   },
   headerAnimation: {
     width: wp('80%'),

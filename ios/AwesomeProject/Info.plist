@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>AwesomeProject</string>
+	<string>ScanMaster</string>
 	<key>NSCameraUsageDescription</key>
     <string>We need access to your camera to scan QR codes and documents</string>
     <key>NSPhotoLibraryUsageDescription</key>
