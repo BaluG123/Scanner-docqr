@@ -78,7 +78,7 @@ const DrawerNavigator = () => {
             ),
           }}
         />
-        <Drawer.Screen
+        {/* <Drawer.Screen
           name="UserList"
           component={UserListScreen}
           options={{
@@ -86,22 +86,13 @@ const DrawerNavigator = () => {
               <Icon name="people" size={24} color={color} />
             ),
           }}
-        />
+        /> */}
         <Drawer.Screen
           name="PDFScanner"
           component={PDFScannerScreen}
           options={{
             drawerIcon: ({ color }) => (
               <Icon name="document-scanner" size={24} color={color} />
-            ),
-          }}
-        />
-        <Drawer.Screen
-          name="Settings"
-          component={SettingsScreen}
-          options={{
-            drawerIcon: ({ color }) => (
-              <Icon name="settings" size={24} color={color} />
             ),
           }}
         />
@@ -132,6 +123,15 @@ const DrawerNavigator = () => {
           title: 'QR Result',
           drawerItemStyle: { display: 'none' },
         }}
+        />
+      <Drawer.Screen
+          name="Settings"
+          component={SettingsScreen}
+          options={{
+            drawerIcon: ({ color }) => (
+              <Icon name="settings" size={24} color={color} />
+            ),
+          }}
         />
       </Drawer.Navigator>
     </GestureHandlerRootView>
