@@ -5,7 +5,8 @@ import HomeScreen from '../screens/HomeScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import QRScannerScreen from '../screens/QRScannerScreen';
 import QRResultScreen from '../screens/QRResultScreen';
-import QRGeneratorScreen from '../screens/QRGeneratorScreen';
+import 
+QRGeneratorScreen from '../screens/QRGeneratorScreen';
 import PDFScannerScreen from '../screens/PDFScannerScreen';
 import CustomDrawerContent from '../components/CustomDrawerContent';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
