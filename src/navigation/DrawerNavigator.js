@@ -124,7 +124,7 @@ const DrawerNavigator = () => {
           ),
         }}
       />
-      <Drawer.Screen 
+      {/* <Drawer.Screen 
         name="PDFScanner" 
         component={PDFScannerScreen}
         options={{
@@ -133,7 +133,7 @@ const DrawerNavigator = () => {
             <Icon name="picture-as-pdf" size={size} color={color} />
           ),
         }}
-      />
+      /> */}
       <Drawer.Screen 
         name="Settings" 
         component={SettingsScreen}
