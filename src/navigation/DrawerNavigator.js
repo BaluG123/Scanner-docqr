@@ -1,169 +1,166 @@
 import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from '../context/ThemeContext';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-
 import HomeScreen from '../screens/HomeScreen';
-import UserListScreen from '../screens/UserListScreen';
 import SettingsScreen from '../screens/SettingsScreen';
-import PDFScannerScreen from '../screens/PDFScannerScreen';
 import QRScannerScreen from '../screens/QRScannerScreen';
-import QRGeneratorScreen from '../screens/QRGeneratorScreen';
 import QRResultScreen from '../screens/QRResultScreen';
+import QRGeneratorScreen from '../screens/QRGeneratorScreen';
+import PDFScannerScreen from '../screens/PDFScannerScreen';
+import CustomDrawerContent from '../components/CustomDrawerContent';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 const Drawer = createDrawerNavigator();
 
-const CustomHeader = ({ title, colors, navigation }) => (
-  <View style={[styles.headerContainer, { backgroundColor: colors.primary }]}>
-    <TouchableOpacity 
-      style={styles.menuButton}
-      onPress={() => navigation.openDrawer()}
-    >
-      <Icon name="menu" size={24} color="#fff" />
-    </TouchableOpacity>
-    <Text style={styles.headerText}>{title}</Text>
-  </View>
-);
-
 const DrawerNavigator = () => {
-  const { colors } = useTheme();
+  const { colors, isDarkMode, toggleTheme } = useTheme();
+
+  const screenOptions = {
+    headerStyle: {
+      backgroundColor: colors.background,
+      elevation: 0,
+      shadowOpacity: 0,
+    },
+    headerTintColor: colors.text,
+    headerTitleStyle: {
+      fontWeight: 'bold',
+      fontSize: wp('4.5%'),
+    },
+    drawerStyle: {
+      backgroundColor: colors.card,
+      width: wp('80%'),
+      borderTopRightRadius: 20,
+      borderBottomRightRadius: 20,
+      elevation: 5,
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+    },
+    drawerLabelStyle: {
+      color: colors.text,
+      fontSize: wp('4%'),
+      marginLeft: -wp('1%'),
+      fontWeight: '500',
+    },
+    drawerItemStyle: {
+      paddingVertical: wp('2%'),
+      marginHorizontal: wp('2%'),
+      borderRadius: 10,
+    },
+    drawerActiveTintColor: colors.primary,
+    drawerInactiveTintColor: colors.text,
+    drawerActiveBackgroundColor: colors.primary + '20',
+    drawerInactiveBackgroundColor: 'transparent',
+    drawerIconStyle: {
+      marginRight: wp('2%'),
+    },
+    drawerType: 'front',
+    overlayColor: 'rgba(0, 0, 0, 0.5)',
+    swipeEnabled: true,
+    swipeEdgeWidth: 50,
+    headerRight: () => (
+      <TouchableOpacity
+        onPress={toggleTheme}
+        style={[styles.themeButton, { backgroundColor: colors.card }]}
+      >
+        <Icon
+          name={isDarkMode ? 'light-mode' : 'dark-mode'}
+          size={24}
+          color={colors.text}
+        />
+      </TouchableOpacity>
+    ),
+  };
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <Drawer.Navigator
-        screenOptions={{
-          headerStyle: {
-            backgroundColor: colors.primary,
-          },
-          headerTintColor: '#fff',
-          drawerActiveTintColor: colors.primary,
-          drawerInactiveTintColor: colors.text,
-          drawerStyle: {
-            backgroundColor: colors.card,
-            width: 280,
-            borderRightColor: colors.border,
-          },
-          drawerLabelStyle: {
-            fontSize: 16,
-            fontWeight: '500',
-          },
-          sceneContainerStyle: {
-            backgroundColor: colors.background,
-          },
-          header: ({ route, navigation }) => (
-            <CustomHeader 
-              title={route.name === 'Home' ? 'Home' : 
-                     route.name === 'UserList' ? 'User List' : 
-                     route.name === 'PDFScanner' ? 'PDF Scanner' :
-                     'Settings'} 
-              colors={colors}
-              navigation={navigation}
-            />
+    <Drawer.Navigator
+      drawerContent={(props) => <CustomDrawerContent {...props} />}
+      screenOptions={screenOptions}
+      initialRouteName="Home"
+    >
+      <Drawer.Screen 
+        name="Home" 
+        component={HomeScreen}
+        options={{
+          title: 'Smart Scanner',
+          drawerIcon: ({ color, size }) => (
+            <Icon name="home" size={size} color={color} />
           ),
-          drawerType: 'front',
-          overlayColor: 'rgba(0, 0, 0, 0.5)',
-          swipeEnabled: true,
-          swipeEdgeWidth: 50,
         }}
-      >
-        <Drawer.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{
-            drawerIcon: ({ color }) => (
-              <Icon name="home" size={24} color={color} />
-            ),
-          }}
-        />
-        {/* <Drawer.Screen
-          name="UserList"
-          component={UserListScreen}
-          options={{
-            drawerIcon: ({ color }) => (
-              <Icon name="people" size={24} color={color} />
-            ),
-          }}
-        /> */}
-        <Drawer.Screen
-          name="PDFScanner"
-          component={PDFScannerScreen}
-          options={{
-            drawerIcon: ({ color }) => (
-              <Icon name="document-scanner" size={24} color={color} />
-            ),
-          }}
-        />
-      <Drawer.Screen
-        name="QRScanner"
+      />
+      <Drawer.Screen 
+        name="QRScanner" 
         component={QRScannerScreen}
         options={{
           title: 'QR Scanner',
-          drawerIcon: ({ color }) => (
-            <Icon name="qr-code-scanner" size={24} color={color} />
+          drawerIcon: ({ color, size }) => (
+            <Icon name="qr-code-scanner" size={size} color={color} />
           ),
         }}
       />
-      <Drawer.Screen
-        name="QRGenerator"
+      {/* <Drawer.Screen 
+        name="QRResult" 
+        component={QRResultScreen}
+        options={{
+          title: 'Scan Result',
+          drawerIcon: ({ color, size }) => (
+            <Icon name="check-circle" size={size} color={color} />
+          ),
+        }}
+      /> */}
+      <Drawer.Screen 
+        name="QRGenerator" 
         component={QRGeneratorScreen}
         options={{
           title: 'QR Generator',
-          drawerIcon: ({ color }) => (
-            <Icon name="qr-code" size={24} color={color} />
+          drawerIcon: ({ color, size }) => (
+            <Icon name="qr-code" size={size} color={color} />
           ),
         }}
       />
-      <Drawer.Screen
-        name="QRResult"
-        component={QRResultScreen}
+      <Drawer.Screen 
+        name="PDFScanner" 
+        component={PDFScannerScreen}
         options={{
-          title: 'QR Result',
-          drawerItemStyle: { display: 'none' },
+          title: 'PDF Scanner',
+          drawerIcon: ({ color, size }) => (
+            <Icon name="picture-as-pdf" size={size} color={color} />
+          ),
         }}
-        />
-      <Drawer.Screen
-          name="Settings"
-          component={SettingsScreen}
-          options={{
-            drawerIcon: ({ color }) => (
-              <Icon name="settings" size={24} color={color} />
-            ),
-          }}
-        />
-      </Drawer.Navigator>
-    </GestureHandlerRootView>
+      />
+      <Drawer.Screen 
+        name="Settings" 
+        component={SettingsScreen}
+        options={{
+          title: 'Settings',
+          drawerIcon: ({ color, size }) => (
+            <Icon name="settings" size={size} color={color} />
+          ),
+        }}
+      />
+    </Drawer.Navigator>
   );
 };
 
 const styles = StyleSheet.create({
-  headerContainer: {
-    height: 56,
-    flexDirection: 'row',
-    alignItems: 'center',
-    elevation: 4,
+  themeButton: {
+    marginRight: wp('4%'),
+    padding: wp('2%'),
+    borderRadius: 25,
+    elevation: 2,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 1,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-  },
-  menuButton: {
-    position: 'absolute',
-    left: 0,
-    padding: 8,
-    zIndex: 1,
-  },
-  headerText: {
-    color: '#fff',
-    fontSize: wp('4.5%'),
-    fontWeight: 'bold',
-    flex: 1,
-    textAlign: 'center',
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
   },
 });
 
