@@ -26,6 +26,7 @@ import { CameraRoll } from '@react-native-camera-roll/camera-roll';
 import Share from 'react-native-share';
 import { Linking } from 'react-native';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
+import { useSettings } from '../context/SettingsContext';
 
 const QRGeneratorScreen = () => {
   const { colors } = useTheme();
@@ -33,9 +34,9 @@ const QRGeneratorScreen = () => {
   const [content, setContent] = useState('');
   const [qrValue, setQrValue] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
-  const [qrSize, setQrSize] = useState(200);
   const viewShotRef = useRef();
   const qrRef = useRef();
+  const { qrSize, qrColor, qrBackgroundColor } = useSettings();
 
   const requestStoragePermission = async () => {
     if (Platform.OS === 'android') {
@@ -344,8 +345,8 @@ const QRGeneratorScreen = () => {
                   <QRCode
                     value={qrValue}
                     size={qrSize}
-                    backgroundColor={colors.card}
-                    color={colors.text}
+                    backgroundColor={qrBackgroundColor}
+                    color={qrColor}
                     getRef={(ref) => (qrRef.current = ref)}
                   />
                 </ViewShot>

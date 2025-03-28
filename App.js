@@ -2,13 +2,16 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import AppNavigator from './src/navigation/AppNavigator';
 import { ThemeProvider } from './src/context/ThemeContext';
+import { SettingsProvider } from './src/context/SettingsContext';
 
 const App = () => {
   return (
     <ThemeProvider>
-      <NavigationContainer>
-        <AppNavigator />
-      </NavigationContainer>
+      <SettingsProvider>
+        <NavigationContainer>
+          <AppNavigator />
+        </NavigationContainer>
+      </SettingsProvider>
     </ThemeProvider>
   );
 };
