@@ -14,11 +14,6 @@ const HomeScreen = ({ navigation }) => {
       title: 'QR Code Scanner',
       description: 'Scan QR codes and barcodes instantly with your camera',
     },
-    // {
-    //   icon: 'document-scanner',
-    //   title: 'PDF Scanner',
-    //   description: 'Convert physical documents into digital PDFs',
-    // },
     {
       icon: 'qr-code',
       title: 'QR Code Generator',

@@ -4,12 +4,9 @@ import { useTheme } from '../context/ThemeContext';
 import HomeScreen from '../screens/HomeScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import QRScannerScreen from '../screens/QRScannerScreen';
-import QRResultScreen from '../screens/QRResultScreen';
-import 
-QRGeneratorScreen from '../screens/QRGeneratorScreen';
-import PDFScannerScreen from '../screens/PDFScannerScreen';
+import QRGeneratorScreen from '../screens/QRGeneratorScreen';
 import CustomDrawerContent from '../components/CustomDrawerContent';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
@@ -105,16 +102,6 @@ const DrawerNavigator = () => {
           ),
         }}
       />
-      {/* <Drawer.Screen 
-        name="QRResult" 
-        component={QRResultScreen}
-        options={{
-          title: 'Scan Result',
-          drawerIcon: ({ color, size }) => (
-            <Icon name="check-circle" size={size} color={color} />
-          ),
-        }}
-      /> */}
       <Drawer.Screen 
         name="QRGenerator" 
         component={QRGeneratorScreen}
@@ -125,16 +112,6 @@ const DrawerNavigator = () => {
           ),
         }}
       />
-      {/* <Drawer.Screen 
-        name="PDFScanner" 
-        component={PDFScannerScreen}
-        options={{
-          title: 'PDF Scanner',
-          drawerIcon: ({ color, size }) => (
-            <Icon name="picture-as-pdf" size={size} color={color} />
-          ),
-        }}
-      /> */}
       <Drawer.Screen 
         name="Settings" 
         component={SettingsScreen}
