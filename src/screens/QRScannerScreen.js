@@ -6,6 +6,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { useIsFocused } from '@react-navigation/native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Reanimated, { useSharedValue, useAnimatedProps } from 'react-native-reanimated';
+import { useTranslation } from 'react-i18next';
 
 // Create animated camera component for zoom
 const ReanimatedCamera = Reanimated.createAnimatedComponent(Camera);
@@ -16,6 +17,7 @@ const QRScannerScreen = ({ navigation }) => {
   const [isScanning, setIsScanning] = useState(true);
   const device = useCameraDevice('back');
   const isFocused = useIsFocused();
+  const { t } = useTranslation();
 
   // Zoom functionality
   const zoom = useSharedValue(0);
@@ -72,7 +74,7 @@ const QRScannerScreen = ({ navigation }) => {
   if (!hasPermission) {
     return (
       <View style={[styles.container, { backgroundColor: colors.background }]}>
-        <Text style={[styles.text, { color: colors.text }]}>Camera permission is required</Text>
+        <Text style={[styles.text, { color: colors.text }]}>{t('scanner.permissionRequired')}</Text>
       </View>
     );
   }
@@ -80,7 +82,7 @@ const QRScannerScreen = ({ navigation }) => {
   if (!device) {
     return (
       <View style={[styles.container, { backgroundColor: colors.background }]}>
-        <Text style={[styles.text, { color: colors.text }]}>Loading camera...</Text>
+        <Text style={[styles.text, { color: colors.text }]}>{t('scanner.loading')}</Text>
       </View>
     );
   }
@@ -104,11 +106,11 @@ const QRScannerScreen = ({ navigation }) => {
       
       <View style={[styles.overlay, { backgroundColor: 'rgba(0,0,0,0.6)' }]}>
         <Text style={[styles.scanText, { color: colors.text }]}>
-          Point camera at QR or barcode
+          {t('scanner.pointCamera')}
         </Text>
         <View style={styles.zoomInfo}>
           <Text style={[styles.zoomText, { color: colors.text }]}>
-            Pinch to zoom ({Math.round(zoom.value * 100)}%)
+            {t('scanner.pinchZoom')} ({Math.round(zoom.value * 100)}%)
           </Text>
         </View>
       </View>
@@ -145,6 +147,7 @@ const styles = StyleSheet.create({
   },
   zoomText: {
     fontSize: wp('3.5%'),
+    style: 'normal', // corrected from styles.zoomText which might be undefined in original/my thought
   },
   scanOverlay: {
     ...StyleSheet.absoluteFillObject,
@@ -161,4 +164,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default QRScannerScreen; 
+export default QRScannerScreen;

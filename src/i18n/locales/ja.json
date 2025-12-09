@@ -1,0 +1,71 @@
+{
+    "home": {
+        "title": "スマートスキャナー",
+        "subtitle": "オールインワンのスキャンソリューション",
+        "scannerFeature": "QRコードスキャナー",
+        "scannerDesc": "カメラでQRコードやバーコードを瞬時にスキャン",
+        "generatorFeature": "QRコード作成",
+        "generatorDesc": "テキストやURLなどのカスタムQRコードを作成",
+        "startScanning": "スキャン開始",
+        "swiperHint": "左からスワイプして詳細機能へ"
+    },
+    "generator": {
+        "enterTitle": "タイトルを入力",
+        "enterContent": "コンテンツを入力",
+        "generateBtn": "QRコードを作成",
+        "share": "共有",
+        "save": "保存",
+        "addLogo": "ロゴ追加",
+        "removeLogo": "削除",
+        "placeholder": "ここにQRコードが表示されます",
+        "successTitle": "成功",
+        "successMessage": "QRコードをギャラリーに保存しました",
+        "errorTitle": "エラー",
+        "errorFill": "タイトルとコンテンツを入力してください",
+        "errorSave": "QRコードの保存に失敗しました",
+        "permissionDenied": "権限がありません",
+        "permissionMsg": "保存するにはストレージへのアクセス権限が必要です",
+        "qrNotReady": "QRコードの準備ができていません",
+        "pickImageError": "画像の選択に失敗しました",
+        "shareError": "QRコードの共有に失敗しました"
+    },
+    "settings": {
+        "title": "設定",
+        "theme": "テーマ",
+        "darkMode": "ダークモード",
+        "qrSettings": "QRコード設定",
+        "qrSize": "QRコードサイズ",
+        "qrColor": "QRコードの色",
+        "backgroundColor": "背景色",
+        "save": "設定を保存",
+        "savedMsg": "設定を保存しました",
+        "language": "言語",
+        "checkForUpdate": "アップデートを確認",
+        "upToDate": "アプリは最新です"
+    },
+    "scanner": {
+        "permissionRequired": "カメラの権限が必要です",
+        "loading": "カメラを読み込み中...",
+        "pointCamera": "QRコードまたはバーコードにカメラを向けてください",
+        "pinchZoom": "ピンチでズーム"
+    },
+    "result": {
+        "title": "QRコードの内容",
+        "type": "タイプ",
+        "share": "共有",
+        "openLink": "リンクを開く",
+        "scanAgain": "もう一度スキャン",
+        "notUrlTitle": "URLではありません",
+        "notUrlMsg": "このQRコードにはURLが含まれていません"
+    },
+    "history": {
+        "title": "スキャン履歴",
+        "empty": "履歴はありません",
+        "clear": "履歴を消去"
+    },
+    "common": {
+        "cancel": "キャンセル",
+        "ok": "OK",
+        "error": "エラー"
+    }
+}

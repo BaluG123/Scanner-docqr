@@ -5,15 +5,18 @@ import HomeScreen from '../screens/HomeScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import QRScannerScreen from '../screens/QRScannerScreen';
 import QRGeneratorScreen from '../screens/QRGeneratorScreen';
+import HistoryScreen from '../screens/HistoryScreen';
 import CustomDrawerContent from '../components/CustomDrawerContent';
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { useTranslation } from 'react-i18next';
 
 const Drawer = createDrawerNavigator();
 
 const DrawerNavigator = () => {
   const { colors, isDarkMode, toggleTheme } = useTheme();
+  const { t } = useTranslation();
 
   const screenOptions = {
     headerStyle: {
@@ -86,7 +89,7 @@ const DrawerNavigator = () => {
         name="Home" 
         component={HomeScreen}
         options={{
-          title: 'Smart Scanner',
+          title: t('home.title'),
           drawerIcon: ({ color, size }) => (
             <Icon name="home" size={size} color={color} />
           ),
@@ -96,7 +99,7 @@ const DrawerNavigator = () => {
         name="QRScanner" 
         component={QRScannerScreen}
         options={{
-          title: 'QR Scanner',
+          title: t('home.scannerFeature'),
           drawerIcon: ({ color, size }) => (
             <Icon name="qr-code-scanner" size={size} color={color} />
           ),
@@ -106,9 +109,19 @@ const DrawerNavigator = () => {
         name="QRGenerator" 
         component={QRGeneratorScreen}
         options={{
-          title: 'QR Generator',
+          title: t('home.generatorFeature'),
           drawerIcon: ({ color, size }) => (
             <Icon name="qr-code" size={size} color={color} />
+          ),
+        }}
+      />
+      <Drawer.Screen 
+        name="History" 
+        component={HistoryScreen}
+        options={{
+          title: t('history.title'),
+          drawerIcon: ({ color, size }) => (
+            <Icon name="history" size={size} color={color} />
           ),
         }}
       />
@@ -116,7 +129,7 @@ const DrawerNavigator = () => {
         name="Settings" 
         component={SettingsScreen}
         options={{
-          title: 'Settings',
+          title: t('settings.title'),
           drawerIcon: ({ color, size }) => (
             <Icon name="settings" size={size} color={color} />
           ),
@@ -142,4 +155,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DrawerNavigator; 
+export default DrawerNavigator;

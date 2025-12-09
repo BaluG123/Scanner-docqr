@@ -12,6 +12,7 @@ import {
   ScrollView,
   Image,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import { CameraRoll } from '@react-native-camera-roll/camera-roll';
 import { PermissionsAndroid } from 'react-native';
@@ -24,9 +25,11 @@ import * as ImagePicker from 'react-native-image-picker';
 import ViewShot from 'react-native-view-shot';
 import Share from 'react-native-share';
 import RNFS from 'react-native-fs';
+import { useTranslation } from 'react-i18next';
 
 const QRGeneratorScreen = () => {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [qrValue, setQrValue] = useState('');
@@ -38,7 +41,7 @@ const QRGeneratorScreen = () => {
 
   const handleGenerateQR = () => {
     if (!title.trim() || !content.trim()) {
-      Alert.alert('Error', 'Please fill in both title and content');
+      Alert.alert(t('common.error'), t('generator.errorFill'));
       return;
     }
 
@@ -62,7 +65,7 @@ const QRGeneratorScreen = () => {
         return;
       }
       if (response.errorCode) {
-        Alert.alert('Error', 'Failed to pick image');
+        Alert.alert(t('common.error'), t('generator.pickImageError'));
         return;
       }
       if (response.assets && response.assets[0]) {
@@ -78,7 +81,7 @@ const QRGeneratorScreen = () => {
   const handleShareQR = async () => {
     try {
       if (!viewShotRef.current) {
-        Alert.alert('Error', 'QR code not ready');
+        Alert.alert(t('common.error'), t('generator.qrNotReady'));
         return;
       }
 
@@ -89,40 +92,21 @@ const QRGeneratorScreen = () => {
       });
     } catch (error) {
       if (error.message !== 'User did not share') {
-        Alert.alert('Error', 'Failed to share QR code');
+        Alert.alert(t('common.error'), t('generator.shareError'));
       }
     }
   };
-
-  // const handleSaveQR = async () => {
-  //   try {
-  //     if (!viewShotRef.current) {
-  //       Alert.alert('Error', 'QR code not ready');
-  //       return;
-  //     }
-
-  //     const uri = await viewShotRef.current.capture();
-  //     const fileName = `QR_${Date.now()}.png`;
-  //     const filePath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
-
-  //     await RNFS.moveFile(uri, filePath);
-  //     await RNFS.saveFile(filePath, filePath);
-  //     Alert.alert('Success', 'QR code saved to gallery');
-  //   } catch (error) {
-  //     Alert.alert('Error', 'Failed to save QR code');
-  //   }
-  // };
 
   const handleSaveQR = async () => {
     try {
       // Check if we have the QR code reference
       if (!viewShotRef.current) {
-        Alert.alert('Error', 'QR code not ready');
+        Alert.alert(t('common.error'), t('generator.qrNotReady'));
         return;
       }
   
-      // Request permission on Android
-      if (Platform.OS === 'android') {
+      // Request permission on Android (only below API 33)
+      if (Platform.OS === 'android' && Platform.Version < 33) {
         const hasPermission = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
         
         if (!hasPermission) {
@@ -130,15 +114,15 @@ const QRGeneratorScreen = () => {
             PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
             {
               title: 'Storage Permission',
-              message: 'App needs access to your storage to save QR codes',
-              buttonNeutral: 'Ask Me Later',
-              buttonNegative: 'Cancel',
-              buttonPositive: 'OK',
+              message: t('generator.permissionMsg'),
+              buttonNeutral: t('common.cancel'),
+              buttonNegative: t('common.cancel'),
+              buttonPositive: t('common.ok'),
             }
           );
           
           if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
-            Alert.alert('Permission Denied', 'Cannot save QR code without storage permission');
+            Alert.alert(t('generator.permissionDenied'), t('generator.permissionMsg'));
             return;
           }
         }
@@ -153,10 +137,10 @@ const QRGeneratorScreen = () => {
         album: 'QR Codes' // Optional: specify an album name
       });
       
-      Alert.alert('Success', 'QR code saved to gallery');
+      Alert.alert(t('generator.successTitle'), t('generator.successMessage'));
     } catch (error) {
       console.error('Failed to save image:', error);
-      Alert.alert('Error', 'Failed to save QR code');
+      Alert.alert(t('common.error'), t('generator.errorSave'));
     }
   };
 
@@ -176,14 +160,14 @@ const QRGeneratorScreen = () => {
             <View style={[styles.inputContainer, { backgroundColor: colors.card }]}>
               <TextInput
                 style={[styles.input, { color: colors.text }]}
-                placeholder="Enter title"
+                placeholder={t('generator.enterTitle')}
                 placeholderTextColor={colors.text + '80'}
                 value={title}
                 onChangeText={setTitle}
               />
               <TextInput
                 style={[styles.input, { color: colors.text }]}
-                placeholder="Enter content"
+                placeholder={t('generator.enterContent')}
                 placeholderTextColor={colors.text + '80'}
                 value={content}
                 onChangeText={setContent}
@@ -191,25 +175,17 @@ const QRGeneratorScreen = () => {
                 numberOfLines={4}
               />
               <TouchableOpacity
-  style={styles.generateBtn}
-  onPress={handleGenerateQR}
-  disabled={isGenerating}
->
-  {isGenerating ? (
-    <ActivityIndicator size="small" color="#fff" style={styles.btnIcon} />
-  ) : (
-    <Icon name="qr-code" size={22} color="#fff" style={styles.btnIcon} />
-  )}
-  <Text style={styles.generateBtnText}>Generate QR Code</Text>
-</TouchableOpacity>
-              {/* <TouchableOpacity
-                style={[styles.generateButton, { backgroundColor: colors.primary }]}
+                style={styles.generateBtn}
                 onPress={handleGenerateQR}
                 disabled={isGenerating}
               >
-                <Icon name="qr-code" size={24} color="#fff" />
-                <Text style={styles.buttonText}>Generate QR Code</Text>
-              </TouchableOpacity> */}
+                {isGenerating ? (
+                  <ActivityIndicator size="small" color="#fff" style={styles.btnIcon} />
+                ) : (
+                  <Icon name="qr-code" size={22} color="#fff" style={styles.btnIcon} />
+                )}
+                <Text style={styles.generateBtnText}>{t('generator.generateBtn')}</Text>
+              </TouchableOpacity>
             </View>
 
             {qrValue ? (
@@ -235,56 +211,31 @@ const QRGeneratorScreen = () => {
                   </View>
                 </ViewShot>
 
-                {/* <View style={styles.buttonContainer}>
-                  <TouchableOpacity
-                    style={[styles.actionButton, { backgroundColor: colors.primary }]}
-                    onPress={handleShareQR}
-                  >
-                    <Icon name="share" size={24} color="black" />
-                    <Text style={styles.buttonText}>Share</Text>
+                <View style={styles.buttonRow}>
+                  <TouchableOpacity style={styles.actionBtn} onPress={handleShareQR}>
+                    <Icon name="share" size={20} color="#fff" />
+                    <Text style={styles.btnText}>{t('generator.share')}</Text>
                   </TouchableOpacity>
-
-                  <TouchableOpacity
-                    style={[styles.actionButton, { backgroundColor: colors.success }]}
-                    onPress={handleSaveQR}
-                  >
-                    <Icon name="save" size={24} color="black" />
-                    <Text style={styles.buttonText}>Save</Text>
+                  
+                  <TouchableOpacity style={[styles.actionBtn, styles.saveBtn]} onPress={handleSaveQR}>
+                    <Icon name="save" size={20} color="#fff" />
+                    <Text style={styles.btnText}>{t('generator.save')}</Text>
                   </TouchableOpacity>
-
-                  <TouchableOpacity
-                    style={[styles.actionButton, { backgroundColor: logo ? colors.warning : colors.primary }]}
+                  
+                  <TouchableOpacity 
+                    style={[styles.actionBtn, logo ? styles.removeBtn : styles.addBtn]} 
                     onPress={logo ? handleRemoveLogo : handlePickLogo}
                   >
-                    <Icon name={logo ? "remove-circle" : "add-photo-alternate"} size={24} color="black" />
-                    <Text style={styles.buttonText}>{logo ? 'Remove Logo' : 'Add Logo'}</Text>
+                    <Icon name={logo ? "remove-circle" : "add-photo-alternate"} size={20} color="#fff" />
+                    <Text style={styles.btnText}>{logo ? t('generator.removeLogo') : t('generator.addLogo')}</Text>
                   </TouchableOpacity>
-                </View> */}
-                <View style={styles.buttonRow}>
-  <TouchableOpacity style={styles.actionBtn} onPress={handleShareQR}>
-    <Icon name="share" size={20} color="#fff" />
-    <Text style={styles.btnText}>Share</Text>
-  </TouchableOpacity>
-  
-  <TouchableOpacity style={[styles.actionBtn, styles.saveBtn]} onPress={handleSaveQR}>
-    <Icon name="save" size={20} color="#fff" />
-    <Text style={styles.btnText}>Save</Text>
-  </TouchableOpacity>
-  
-  <TouchableOpacity 
-    style={[styles.actionBtn, logo ? styles.removeBtn : styles.addBtn]} 
-    onPress={logo ? handleRemoveLogo : handlePickLogo}
-  >
-    <Icon name={logo ? "remove-circle" : "add-photo-alternate"} size={20} color="#fff" />
-    <Text style={styles.btnText}>{logo ? 'Remove' : 'Add Logo'}</Text>
-  </TouchableOpacity>
-</View>
+                </View>
               </View>
             ) : (
               <View style={[styles.placeholderContainer, { backgroundColor: colors.card }]}>
                 <Icon name="qr-code" size={wp('20%')} color={colors.text + '40'} />
                 <Text style={[styles.placeholderText, { color: colors.text + '80' }]}>
-                  Generate a QR code to see it here
+                  {t('generator.placeholder')}
                 </Text>
               </View>
             )}
@@ -397,42 +348,6 @@ const styles = StyleSheet.create({
     marginLeft: wp('1.5%'),
     fontSize: wp('3.5%'),
   },
-  // logoContainer: {
-  //   position: 'absolute',
-  //   alignItems: 'center',
-  //   justifyContent: 'center',
-  //   backgroundColor: '#fff',
-  //   borderRadius: wp('5%'),
-  //   padding: wp('2%'),
-  // },
-  // logo: {
-  //   width: wp('15%'),
-  //   height: wp('15%'),
-  //   borderRadius: wp('7.5%'),
-  // },
-  // buttonContainer: {
-  //   flexDirection: 'row',
-  //   justifyContent: 'space-around',
-  //   width: '100%',
-  //   marginTop: hp('3%'),
-  //   flexWrap: 'wrap',
-  //   gap: wp('3%'),
-  // },
-  // actionButton: {
-  //   flexDirection: 'row',
-  //   alignItems: 'center',
-  //   justifyContent: 'center',
-  //   paddingVertical: hp('1.5%'),
-  //   paddingHorizontal: wp('4%'),
-  //   borderRadius: 25,
-  //   minWidth: wp('25%'),
-  // },
-  // buttonText: {
-  //   color: 'black',
-  //   fontSize: wp('4%'),
-  //   marginLeft: wp('2%'),
-  //   fontWeight: '600',
-  // },
   placeholderContainer: {
     flex: 1,
     alignItems: 'center',
@@ -473,4 +388,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default QRGeneratorScreen; 
+export default QRGeneratorScreen;

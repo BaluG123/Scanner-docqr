@@ -1,0 +1,71 @@
+{
+    "home": {
+        "title": "Smart Scanner",
+        "subtitle": "Your all-in-one scanning solution",
+        "scannerFeature": "QR Code Scanner",
+        "scannerDesc": "Scan QR codes and barcodes instantly with your camera",
+        "generatorFeature": "QR Code Generator",
+        "generatorDesc": "Create custom QR codes for text, URLs, and more",
+        "startScanning": "Start Scanning",
+        "swiperHint": "Swipe from left to access more features"
+    },
+    "generator": {
+        "enterTitle": "Enter title",
+        "enterContent": "Enter content",
+        "generateBtn": "Generate QR Code",
+        "share": "Share",
+        "save": "Save",
+        "addLogo": "Add Logo",
+        "removeLogo": "Remove",
+        "placeholder": "Generate a QR code to see it here",
+        "successTitle": "Success",
+        "successMessage": "QR code saved to gallery",
+        "errorTitle": "Error",
+        "errorFill": "Please fill in both title and content",
+        "errorSave": "Failed to save QR code",
+        "permissionDenied": "Permission Denied",
+        "permissionMsg": "Cannot save QR code without storage permission",
+        "qrNotReady": "QR code not ready",
+        "pickImageError": "Failed to pick image",
+        "shareError": "Failed to share QR code"
+    },
+    "settings": {
+        "title": "Settings",
+        "theme": "Theme",
+        "darkMode": "Dark Mode",
+        "qrSettings": "QR Code Settings",
+        "qrSize": "QR Code Size",
+        "qrColor": "QR Code Color",
+        "backgroundColor": "Background Color",
+        "save": "Save Settings",
+        "savedMsg": "Settings saved successfully",
+        "language": "Language",
+        "checkForUpdate": "Check for Update",
+        "upToDate": "App is up to date"
+    },
+    "scanner": {
+        "permissionRequired": "Camera permission is required",
+        "loading": "Loading camera...",
+        "pointCamera": "Point camera at QR or barcode",
+        "pinchZoom": "Pinch to zoom"
+    },
+    "result": {
+        "title": "QR Code Content",
+        "type": "Type",
+        "share": "Share",
+        "openLink": "Open Link",
+        "scanAgain": "Scan Again",
+        "notUrlTitle": "Not a URL",
+        "notUrlMsg": "This QR code does not contain a URL"
+    },
+    "history": {
+        "title": "Scanner History",
+        "empty": "No scan history yet",
+        "clear": "Clear History"
+    },
+    "common": {
+        "cancel": "Cancel",
+        "ok": "OK",
+        "error": "Error"
+    }
+}

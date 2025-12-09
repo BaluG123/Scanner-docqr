@@ -4,20 +4,22 @@ import { useTheme } from '../context/ThemeContext';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import LottieView from 'lottie-react-native';
+import { useTranslation } from 'react-i18next';
 
 const HomeScreen = ({ navigation }) => {
   const { colors } = useTheme();
+  const { t } = useTranslation();
 
   const features = [
     {
       icon: 'qr-code-scanner',
-      title: 'QR Code Scanner',
-      description: 'Scan QR codes and barcodes instantly with your camera',
+      title: t('home.scannerFeature'),
+      description: t('home.scannerDesc'),
     },
     {
       icon: 'qr-code',
-      title: 'QR Code Generator',
-      description: 'Create custom QR codes for text, URLs, and more',
+      title: t('home.generatorFeature'),
+      description: t('home.generatorDesc'),
     },
   ];
 
@@ -34,10 +36,10 @@ const HomeScreen = ({ navigation }) => {
           style={styles.headerAnimation}
         />
         <Text style={[styles.title, { color: colors.text }]}>
-          Smart Scanner
+          {t('home.title')}
         </Text>
         <Text style={[styles.subtitle, { color: colors.text + '80' }]}>
-          Your all-in-one scanning solution
+          {t('home.subtitle')}
         </Text>
       </View>
 
@@ -63,12 +65,12 @@ const HomeScreen = ({ navigation }) => {
         onPress={() => navigation.navigate('QRScanner')}
       >
         <Icon name="qr-code-scanner" size={wp('6%')} color="#fff" />
-        <Text style={styles.startButtonText}>Start Scanning</Text>
+        <Text style={styles.startButtonText}>{t('home.startScanning')}</Text>
       </TouchableOpacity>
 
       <View style={[styles.footer, { backgroundColor: colors.card }]}>
         <Text style={[styles.footerText, { color: colors.text + '80' }]}>
-          Swipe from left to access more features
+          {t('home.swiperHint')}
         </Text>
         <Icon name="chevron-left" size={wp('5%')} color={colors.text + '80'} />
       </View>

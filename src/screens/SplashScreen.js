@@ -106,10 +106,10 @@ const SplashScreen = ({ navigation }) => {
             <Text style={styles.featureText}>Generate</Text>
           </View>
           
-          {/* <View style={styles.featureItem}>
+          <View style={styles.featureItem}>
             <MaterialIcons name="history" size={wp('8%')} color="#007AFF" />
             <Text style={styles.featureText}>History</Text>
-          </View> */}
+          </View> 
         </Animated.View>
         
         <View style={styles.loadingContainer}>

@@ -1,19 +1,47 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Share, Linking, Alert, ScrollView } from 'react-native';
 import { useTheme } from '../context/ThemeContext';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import LottieView from 'lottie-react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { useTranslation } from 'react-i18next';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const QRResultScreen = ({ route, navigation }) => {
   const { colors } = useTheme();
   const { data, type } = route.params;
+  const { t } = useTranslation();
+
+  useEffect(() => {
+    saveToHistory();
+  }, []);
+
+  const saveToHistory = async () => {
+    try {
+      const storedHistory = await AsyncStorage.getItem('scanHistory');
+      let history = storedHistory ? JSON.parse(storedHistory) : [];
+      
+      const newItem = {
+        data,
+        type,
+        date: new Date().toISOString(),
+      };
+      
+      // Add to beginning, limit to 50 items
+      history.unshift(newItem);
+      if (history.length > 50) history.pop();
+      
+      await AsyncStorage.setItem('scanHistory', JSON.stringify(history));
+    } catch (error) {
+      console.error('Error saving history:', error);
+    }
+  };
 
   const handleShare = async () => {
     try {
       await Share.share({
         message: data,
-        title: 'QR Code Content',
+        title: t('result.title'),
       });
     } catch (error) {
       console.error('Error sharing:', error);
@@ -25,7 +53,7 @@ const QRResultScreen = ({ route, navigation }) => {
       if (data.startsWith('http')) {
         await Linking.openURL(data);
       } else {
-        Alert.alert('Not a URL', 'This QR code does not contain a URL');
+        Alert.alert(t('result.notUrlTitle'), t('result.notUrlMsg'));
       }
     } catch (error) {
       console.error('Error opening link:', error);
@@ -50,9 +78,9 @@ const QRResultScreen = ({ route, navigation }) => {
           />
           
           <View style={[styles.resultContainer, { backgroundColor: colors.card }]}>
-            <Text style={[styles.title, { color: colors.text }]}>QR Code Content</Text>
+            <Text style={[styles.title, { color: colors.text }]}>{t('result.title')}</Text>
             <Text style={[styles.type, { color: colors.primary }]}>
-              Type: {type || 'Unknown'}
+              {t('result.type')}: {type || 'Unknown'}
             </Text>
             <Text style={[styles.data, { color: colors.text }]} numberOfLines={5}>
               {data}
@@ -67,7 +95,7 @@ const QRResultScreen = ({ route, navigation }) => {
           onPress={handleShare}
         >
           <Icon name="share" size={24} color="#fff" />
-          <Text style={styles.buttonText}>Share</Text>
+          <Text style={styles.buttonText}>{t('result.share')}</Text>
         </TouchableOpacity>
 
         {data.startsWith('http') && (
@@ -76,7 +104,7 @@ const QRResultScreen = ({ route, navigation }) => {
             onPress={handleOpenLink}
           >
             <Icon name="open-in-new" size={24} color="#fff" />
-            <Text style={styles.buttonText}>Open Link</Text>
+            <Text style={styles.buttonText}>{t('result.openLink')}</Text>
           </TouchableOpacity>
         )}
 
@@ -85,7 +113,7 @@ const QRResultScreen = ({ route, navigation }) => {
           onPress={() => navigation.goBack()}
         >
           <Icon name="arrow-back" size={24} color="#fff" />
-          <Text style={styles.buttonText}>Scan Again</Text>
+          <Text style={styles.buttonText}>{t('result.scanAgain')}</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -172,4 +200,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default QRResultScreen; 
+export default QRResultScreen;
